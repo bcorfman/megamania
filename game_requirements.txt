@@ -1,0 +1,77 @@
+# Megamania Game Requirements
+
+## Game Setup
+1. Screen dimensions: 1440x1960 pixels
+2. Game title: "Space Invaders-style Game"
+3. Resizable window support
+
+## Player Ship
+1. Sprite: Orange player ship
+2. Scale: 1.0
+3. Movement speed: 10 pixels per frame
+4. Controls: Left and right arrow keys for movement
+5. Shooting: Left Ctrl key
+6. Initial position: Bottom center of the screen
+
+## Lasers
+1. Sprite: Blue laser
+2. Scale: 1.0
+3. Speed: 20 pixels per frame
+4. Maximum active lasers: 12
+5. Cooldown between shots: 0.16 seconds
+6. Sound effect on firing
+
+## Aliens
+1. Sprite: Bee enemy
+2. Scale: 0.8
+3. Speed: 15 pixels per frame
+4. Formation: 4 rows, 5 aliens per row
+5. Vertical spacing: 2/3 of screen height divided by (rows - 1)
+6. Horizontal spacing: 400 pixels
+7. Movement patterns: Diagonal down and right
+8. Wrap around screen edges
+
+## Gameplay Mechanics
+1. Lives system: Start with 3 lives
+2. Score system: 100 points per alien destroyed
+3. Collision detection: Lasers with aliens, aliens with player ship
+4. Player explosion animation on collision with alien
+5. Alien explosion animation when hit by laser
+6. Game over when lives reach 0
+7. Restart option on game over screen
+
+## Visual Effects
+1. Starfield background
+   - Dynamically generated based on screen size (1 star per 5000 pixels of screen area)
+   - Stars represented by `Star` class with properties for position, size, speed, and twinkling effect
+   - Vertical scrolling effect: Stars move downward at varying speeds (0.5 to 2 pixels per frame)
+   - Parallax effect due to varying star speeds
+   - Wrap-around effect: Stars reappear at the top when they move off the bottom
+   - Twinkling effect: Stars randomly change color (red or blue) for short durations
+   - Stars are redrawn on window resize to maintain proper density
+2. Explosion animation using sprite sheet
+3. Life icons display in top-left corner
+4. Score display in top-right corner
+
+## Audio
+1. Laser sound effect
+2. Explosion sound effect
+
+## Additional Features
+1. SpritePool for efficient laser management
+2. Delayed start of alien movement (2 seconds after game start)
+3. Reset functionality after player death
+4. Pause in gameplay during player explosion animation
+
+## Technical Requirements
+1. Python version: 3.8 or higher
+2. Dependencies:
+   - arcade >= 3.0.0.dev32
+3. Build system:
+   - Requires: hatchling
+   - Backend: hatchling.build
+4. Project name: Megamania
+5. Version: 0.1.0
+7. Main game loop with update and draw methods
+8. Event handling for key presses and releases
+9. Window resizing support with dynamic adjustment of game elements (including starfield)

@@ -1,0 +1,142 @@
+# Action System Demo and Action Requirements
+
+## I. Demo Requirements
+
+### 1. Window Setup
+- Create a window using Arcade 3.0
+- Set the window dimensions to 800x600 pixels
+- Set the window title to "Action System Demo"
+- Set a white background color
+- Define a text margin at the top of the screen to prevent sprite overlap with text
+
+### 2. Sprite Creation and Management
+- Create an `ActionSprite` class that inherits from `arcade.Sprite`
+- Load a character sprite from Arcade's built-in resources
+- Initialize the sprite at the center of the screen
+- Use `arcade.SpriteList` to manage and efficiently render the sprite
+- Implement a method to reset the sprite to its initial state
+- Ensure the sprite stays within screen bounds and below the text margin during all actions
+
+### 3. Action Demonstration
+- Implement demonstrations for the following actions:
+  - MoveTo
+  - MoveBy (specifically to upper left)
+  - RotateBy
+  - RotateTo
+  - FadeIn
+  - FadeOut
+  - FadeTo
+  - ScaleTo
+  - ScaleBy
+  - Blink
+  - Lerp
+  - Speed
+  - Accelerate
+  - AccelDecel
+  - Bezier
+  - JumpBy
+  - JumpTo
+- Ensure each action demonstration is clearly visible and understandable
+- Use appropriate parameters for each action to showcase its effect
+- Ensure actions keep the sprite fully visible within the screen boundaries and below the text margin
+
+### 4. User Interface
+- Display the name of the current action being demonstrated
+- Show instructions for restarting the demo (SPACE key) or exiting (ESC key) when the demo is complete
+- Use `arcade.Text` objects for efficient text rendering
+- Position text elements to avoid overlap with the sprite
+
+### 5. Interaction and Flow
+- Implement key press handling for SPACE (restart demo) and ESC (exit demo)
+- Create a smooth transition between action demonstrations
+- Implement a proper restart mechanism that resets the sprite state and recreates actions
+
+### 6. Performance and Compatibility
+- Ensure smooth animation at 60 FPS
+- Optimize action processing for efficiency
+- Ensure full compatibility with Arcade 3.0
+- Test the demo on multiple platforms (Windows, macOS, Linux)
+
+### 7. Code Structure and Documentation
+- Organize the demo code in a clear, readable structure
+- Use proper Python naming conventions and style guidelines
+- Include necessary imports from the action system modules
+- Provide clear, concise comments explaining key parts of the demo code
+- Include a brief description of how to run the demo at the top of the file
+
+### 8. Error Handling and Recovery
+- Implement proper error handling for resource loading and action execution
+- Gracefully handle any potential runtime errors
+- Ensure the demo can continue or gracefully terminate if an action fails
+
+### 9. Extensibility
+- Structure the demo to allow easy addition of new actions or sprites
+- Make it simple to modify the action sequence or add new actions to the demonstration
+
+## II. Action Requirements
+
+### 1. Base Action System
+- Implement a base `Action` class with methods: `start()`, `step(dt: float)`, `done() -> bool`, `stop()`
+- Support action composition: sequence (`+`), repeat (`*`), and parallel (`|`) operations
+- Implement `IntervalAction` class for time-based actions
+- Implement `InstantAction` class for immediate actions
+- Create `Loop`, `Sequence`, `Spawn`, and `Repeat` classes for complex action patterns
+
+### 2. Specific Action Implementations
+- MoveTo: Move sprite to a specific position
+- MoveBy: Move sprite by a given amount
+- RotateBy: Rotate sprite by a given angle
+- RotateTo: Rotate sprite to a specific angle
+- FadeIn: Fade in the sprite
+- FadeOut: Fade out the sprite
+- FadeTo: Fade sprite to a specific alpha value
+- ScaleTo: Scale sprite to a specific size
+- ScaleBy: Scale sprite by a given factor
+- Blink: Make sprite blink
+- Lerp: Linear interpolation of a sprite attribute
+- Speed: Modify the speed of another action
+- Accelerate: Apply acceleration to another action
+- AccelDecel: Apply acceleration and deceleration to another action
+- Bezier: Move sprite along a Bezier curve
+  - Accept control points relative to the sprite's starting position
+  - Adjust control points based on the sprite's position at the start of the action
+- JumpBy: Make sprite jump by a given amount
+  - Implement both horizontal and vertical movement
+  - Create a visible arc for the jump
+- JumpTo: Make sprite jump to a specific position
+
+### 3. Action Behavior and Parameters
+- Ensure consistent use of tuples for all position-based parameters
+- Implement proper type checking for action parameters
+- Ensure all actions respect the boundaries of the screen and text margin
+- Implement `__reversed__()` method for reversible actions
+
+### 4. Integration with Arcade
+- Create an `ActionSprite` class that inherits from `arcade.Sprite`
+- Implement `do(action: Action)` method for `ActionSprite` to execute actions
+- Implement `update()` method for `ActionSprite` to process active actions
+- Implement `remove_action(action: Action)` method for `ActionSprite`
+- Ensure compatibility with Arcade 3.0 by using appropriate Arcade features and avoiding deprecated ones
+
+### 5. Performance and Optimization
+- Optimize action execution for large numbers of sprites
+- Minimize memory usage and object creation
+- Implement efficient update loops for all actions
+
+### 6. Documentation and Testing
+- Provide clear documentation for each action class and method
+- Include usage examples for common scenarios
+- Develop unit tests for individual actions
+- Create integration tests for complex action sequences
+- Test performance with a large number of sprites and actions
+
+### 7. Extensibility and Maintenance
+- Design the system to allow easy addition of new custom actions
+- Provide clear guidelines for creating new actions
+- Use consistent naming conventions and code style throughout the project
+- Implement proper inheritance hierarchy for action classes
+
+### 8. Error Handling and Edge Cases
+- Implement proper error handling for invalid parameters or states
+- Handle potential edge cases in action execution (e.g., division by zero, out-of-bounds movements)
+- Provide meaningful error messages for debugging
