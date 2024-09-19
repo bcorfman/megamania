@@ -1,6 +1,6 @@
 # Megamania
 
-A 2D space shooter based on Activision's [Megamania](https://en.wikipedia.org/wiki/Megamania) game from 1982. It is written with Python and the Arcade 3.0 library, and uses [Rye for package management](https://rye.astral.sh/).
+A 2D space shooter based on Activision's [Megamania](https://en.wikipedia.org/wiki/Megamania) game from 1982. It is written with Python and the Arcade 3.0 library, and uses [Rye for package management](https://rye.astral.sh/). Definitely still in progress, but it works now.
 
 This game itself has been made entirely using Anthropic's AI, [Claude 3 Sonnet](https://claude.ai), with prompt engineering supplied by me.
 
