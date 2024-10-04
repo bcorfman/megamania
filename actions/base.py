@@ -1,5 +1,3 @@
-from typing import Any, Callable, List, Union
-
 import arcade
 
 
@@ -36,9 +34,7 @@ class Action:
         return spawn(self, other)
 
     def __reversed__(self):
-        raise NotImplementedError(
-            f"Action {self.__class__.__name__} cannot be reversed"
-        )
+        raise NotImplementedError(f"Action {self.__class__.__name__} cannot be reversed")
 
 
 class IntervalAction(Action):
@@ -48,7 +44,10 @@ class IntervalAction(Action):
 
     def step(self, dt: float):
         super().step(dt)
-        t = min(1, self._elapsed / self.duration)
+        try:
+            t = min(1, self._elapsed / self.duration)
+        except ZeroDivisionError:
+            t = 1.0
         self.update(t)
         if t == 1:
             self._done = True
@@ -59,7 +58,8 @@ class IntervalAction(Action):
 
 class InstantAction(IntervalAction):
     def __init__(self):
-        super().__init__(0)
+        super().__init__()
+        self.duration = 0.0
 
     def step(self, dt: float):
         pass
@@ -80,8 +80,10 @@ class Loop(Action):
         self.action = action
         self.times = times
         self.current_action = None
+        self.current_times = 0
 
     def start(self):
+        self.current_times = 0
         self.current_action = self.action
         self.current_action.target = self.target
         self.current_action.start()
@@ -112,12 +114,13 @@ def sequence(*actions: Action) -> Action:
 
 
 class Sequence(Action):
-    def __init__(self, actions: List[Action]):
+    def __init__(self, actions: list[Action]):
         super().__init__()
         self.actions = actions
         self.current_index = 0
 
     def start(self):
+        self.current_index = 0
         for action in self.actions:
             action.target = self.target
         self.actions[0].start()
@@ -145,7 +148,7 @@ def spawn(*actions: Action) -> Action:
 
 
 class Spawn(Action):
-    def __init__(self, actions: List[Action]):
+    def __init__(self, actions: list[Action]):
         super().__init__()
         self.actions = actions
 
@@ -199,7 +202,7 @@ class Repeat(Action):
 class ActionSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.actions: List[Action] = []
+        self.actions: list[Action] = []
 
     def do(self, action: Action):
         action.target = self
@@ -224,9 +227,7 @@ class ActionSprite(arcade.Sprite):
 if __name__ == "__main__":
     window = arcade.Window(800, 600, "Base Action System Example")
 
-    sprite = ActionSprite(
-        ":resources:images/animated_characters/female_person/femalePerson_idle.png", 0.5
-    )
+    sprite = ActionSprite(":resources:images/animated_characters/female_person/femalePerson_idle.png", 0.5)
     sprite.center_x = 400
     sprite.center_y = 300
 

@@ -1,6 +1,5 @@
 import arcade
 
-
 class SpritePool:
     def __init__(self, sprites):
         self.sprites = sprites
@@ -43,3 +42,4 @@ class SpritePool:
 
     def draw(self):
         self.sprite_list.draw()
+

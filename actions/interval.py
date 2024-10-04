@@ -1,10 +1,9 @@
 import math
 import random
-from typing import List, Tuple
 
 import arcade
 
-from base_actions import IntervalAction
+from .base import IntervalAction
 
 
 class Lerp(IntervalAction):
@@ -112,16 +111,13 @@ class AccelDecel(IntervalAction):
 
 
 class MoveTo(IntervalAction):
-    def __init__(self, position: Tuple[float, float], duration: float = 5):
+    def __init__(self, position: tuple[float, float], duration: float = 5):
         super().__init__(duration)
         self.end_position = position
 
     def start(self):
         self.start_position = (self.target.center_x, self.target.center_y)
-        self.delta = (
-            self.end_position[0] - self.start_position[0],
-            self.end_position[1] - self.start_position[1]
-        )
+        self.delta = (self.end_position[0] - self.start_position[0], self.end_position[1] - self.start_position[1])
 
     def update(self, t: float):
         new_x = self.start_position[0] + self.delta[0] * t
@@ -130,16 +126,13 @@ class MoveTo(IntervalAction):
 
 
 class MoveBy(MoveTo):
-    def __init__(self, delta: Tuple[float, float], duration: float = 5):
+    def __init__(self, delta: tuple[float, float], duration: float = 5):
         super().__init__(delta, duration)
         self.delta = delta
 
     def start(self):
         self.start_position = (self.target.center_x, self.target.center_y)
-        self.end_position = (
-            self.start_position[0] + self.delta[0],
-            self.start_position[1] + self.delta[1]
-        )
+        self.end_position = (self.start_position[0] + self.delta[0], self.start_position[1] + self.delta[1])
 
     def __reversed__(self):
         return MoveBy((-self.delta[0], -self.delta[1]), self.duration)
@@ -165,9 +158,7 @@ class FadeTo(IntervalAction):
         self.start_alpha = self.target.alpha
 
     def update(self, t: float):
-        self.target.alpha = int(
-            self.start_alpha + (self.end_alpha - self.start_alpha) * t
-        )
+        self.target.alpha = int(self.start_alpha + (self.end_alpha - self.start_alpha) * t)
 
 
 class FadeIn(FadeOut):
@@ -214,7 +205,7 @@ class Blink(IntervalAction):
 
 
 class Bezier(IntervalAction):
-    def __init__(self, bezier: List[Tuple[float, float]], duration: float = 5):
+    def __init__(self, bezier: list[tuple[float, float]], duration: float = 5):
         super().__init__(duration)
         self.bezier = bezier
 
@@ -226,7 +217,7 @@ class Bezier(IntervalAction):
         self.target.center_x = self.start_position[0] + p[0]
         self.target.center_y = self.start_position[1] + p[1]
 
-    def _bezier_at(self, t: float) -> Tuple[float, float]:
+    def _bezier_at(self, t: float) -> tuple[float, float]:
         # Simple implementation for cubic Bezier curve
         cx = 3 * (self.bezier[1][0] - self.bezier[0][0])
         bx = 3 * (self.bezier[2][0] - self.bezier[1][0]) - cx
@@ -244,9 +235,7 @@ class Bezier(IntervalAction):
 
 
 class JumpBy(IntervalAction):
-    def __init__(
-        self, position: Tuple[float, float], height: float, jumps: int, duration: float
-    ):
+    def __init__(self, position: tuple[float, float], height: float, jumps: int, duration: float):
         super().__init__(duration)
         self.delta = position
         self.height = height
@@ -263,18 +252,13 @@ class JumpBy(IntervalAction):
         self.target.center_y = self.start_position[1] + y
 
     def __reversed__(self):
-        return JumpBy(
-            (-self.delta[0], -self.delta[1]), self.height, self.jumps, self.duration
-        )
+        return JumpBy((-self.delta[0], -self.delta[1]), self.height, self.jumps, self.duration)
 
 
 class JumpTo(JumpBy):
     def start(self):
         super().start()
-        self.delta = (
-            self.delta[0] - self.start_position[0],
-            self.delta[1] - self.start_position[1]
-        )
+        self.delta = (self.delta[0] - self.start_position[0], self.delta[1] - self.start_position[1])
 
 
 class Delay(IntervalAction):
@@ -294,23 +278,13 @@ class RandomDelay(Delay):
 if __name__ == "__main__":
     window = arcade.Window(800, 600, "Interval Actions Example")
 
-    sprite = arcade.Sprite(
-        ":resources:images/animated_characters/female_person/femalePerson_idle.png", 0.5
-    )
+    sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png", 0.5)
     sprite.center_x = 400
     sprite.center_y = 300
 
-    action = (
-        MoveTo((600, 400), 2.0) + 
-        RotateBy(360, 1.0) | 
-        ScaleTo(2, 3.0) + 
-        FadeOut(1.0) + 
-        FadeIn(1.0) + 
-        JumpBy((0, 100), 50, 2, 1.0) + 
-        Blink(5, 1.0) + 
-        Delay(1.0) + 
-        ScaleTo(1, 1.0)
-    )
+    action = MoveTo((600, 400), 2.0) + RotateBy(360, 1.0) | ScaleTo(2, 3.0) + FadeOut(1.0) + FadeIn(1.0) + JumpBy(
+        (0, 100), 50, 2, 1.0
+    ) + Blink(5, 1.0) + Delay(1.0) + ScaleTo(1, 1.0)
 
     sprite.do(action)
 

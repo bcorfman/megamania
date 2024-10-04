@@ -1,13 +1,14 @@
 import copy
-from typing import Any, Callable, Tuple
+from collections.abc import Callable
+from typing import Any
 
 import arcade
 
-from base_actions import InstantAction
+from .base import InstantAction
 
 
 class Place(InstantAction):
-    def __init__(self, position: Tuple[float, float]):
+    def __init__(self, position: tuple[float, float]):
         super().__init__()
         self.position = position
 
@@ -59,22 +60,14 @@ class CallFuncS(CallFunc):
 if __name__ == "__main__":
     window = arcade.Window(800, 600, "Instant Actions Example")
 
-    sprite = arcade.Sprite(
-        ":resources:images/animated_characters/female_person/femalePerson_idle.png", 0.5
-    )
+    sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png", 0.5)
     sprite.center_x = 400
     sprite.center_y = 300
 
     def print_message(target):
         print(f"Hello from {target}")
 
-    action = (
-        Place((200, 200)) +
-        CallFuncS(print_message) +
-        Hide() +
-        Show() +
-        ToggleVisibility()
-    )
+    action = Place((200, 200)) + CallFuncS(print_message) + Hide() + Show() + ToggleVisibility()
 
     sprite.do(action)
 
